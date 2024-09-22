@@ -1,0 +1,29 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "CRUD Operation using MERN Stack",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanialRashid786/MERN-CRUD-Operations.git"
+  },
+  "author": "Danial Rashid",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DanialRashid786/MERN-CRUD-Operations/issues"
+  },
+  "homepage": "https://github.com/DanialRashid786/MERN-CRUD-Operations#readme",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "mongoose": "^8.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
