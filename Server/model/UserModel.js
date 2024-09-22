@@ -20,8 +20,7 @@ const userSchema = new Schema(
       type: String,
       required: true
     },
-    gender: String,
-    job_title: String
+
   },
   { timestamps: true }  // Corrected to handle createdAt and updatedAt
 );

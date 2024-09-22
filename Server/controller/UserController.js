@@ -1,86 +1,126 @@
-const User = require('../model/UserModel'); // Ensure the correct import
+const User = require('../model/UserModel'); // Import User model
 
+/**
+ * Create a new user and save to the database
+ * @route POST /user
+ * @access Public
+ */
 const handelPostSaveUser = async (req, res) => {
   try {
-    const { email, first_name, last_name, address, gender, job_title } = req.body;
+    const { email, first_name, last_name, address} = req.body;
 
+    // Check for required fields
     if (!email || !first_name || !last_name) {
-      return res.status(400).json({ message: "All required fields must be provided" });
+      return res.status(400).json({ message: "Email, first name, and last name are required" });
     }
 
+    // Check if user already exists
     const userExist = await User.findOne({ email });
     if (userExist) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "User already exists with this email" });
     }
 
+    // Create a new user instance
     const newUser = new User({
       first_name,
       last_name,
       email,
-      address,
-      gender,
-      job_title,
+      address
     });
 
-    const saveData = await newUser.save();
-    return res.status(201).json(saveData);
+    // Save the user data
+    const savedUser = await newUser.save();
+
+    return res.status(201).json(savedUser);
   } catch (error) {
     console.error("Error saving user:", error);
-    return res.status(500).json({ errorMessage: error.message });
+    return res.status(500).json({ errorMessage: "An error occurred while saving the user" });
   }
 };
 
-const handelGetUserById = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id); // Use singular 'User'
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
+/**
+ * Get all users from the database
+ * @route GET /user
+ * @access Public
+ */
 const handelGetAllUsers = async (req, res) => {
   try {
-    const alldbUsers = await User.find({});
-    res.status(200).json(alldbUsers);
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: err.message });
+    const users = await User.find({});
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return res.status(500).json({ message: "An error occurred while fetching users" });
   }
 };
 
+/**
+ * Get a single user by ID
+ * @route GET /user/:id
+ * @access Public
+ */
+const handelGetUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    return res.status(500).json({ message: "An error occurred while fetching the user" });
+  }
+};
+
+/**
+ * Update user by ID
+ * @route PUT /user/:id
+ * @access Public
+ */
 const handelUpdateUserById = async (req, res) => {
   try {
+    const { first_name, last_name, address } = req.body;
+
+    // Find the user by ID and update the fields
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
-      { last_name: "changed" },  // Change last_name as an example
-      { new: true }  // Return updated user
+      { first_name, last_name, address }, // Update all fields dynamically
+      { new: true, runValidators: true }  // Return the updated user and run validation
     );
 
     if (!updatedUser) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    return res.json({ status: "success", updatedUser });
+    return res.status(200).json({ status: "success", updatedUser });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error updating user:", error);
+    return res.status(500).json({ message: "An error occurred while updating the user" });
   }
 };
 
+/**
+ * Delete user by ID
+ * @route DELETE /user/:id
+ * @access Public
+ */
 const handelDeleteUserById = async (req, res) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
-    
+
     if (!deletedUser) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    return res.json({ status: "success", message: "User deleted successfully" });
+    return res.status(200).json({ status: "success", message: "User deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error deleting user:", error);
+    return res.status(500).json({ message: "An error occurred while deleting the user" });
   }
 };
 
