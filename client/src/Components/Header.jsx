@@ -6,7 +6,7 @@ function Header() {
     <>
       <div>
         <header>
-          <div className="navbar bg-base-100" data-theme="cupcake">
+          <div className="navbar" data-theme="dark">
             <div className="navbar-start">
               <div className="dropdown">
                 <div
