@@ -1,6 +1,8 @@
 import React from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
+import { Link } from "react-router-dom";
+
 
 function Home() {
   return (
@@ -21,7 +23,7 @@ function Home() {
         Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
         quasi. In deleniti eaque aut repudiandae et a id nisi.
       </p>
-      <button className="btn btn-primary">All Users</button>
+      <Link to='/users' className="btn btn-primary">All Users</Link>
     </div>
   </div>
 </div>
