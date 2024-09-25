@@ -43,15 +43,15 @@ function UserForm({ userId }) {
     e.preventDefault();
     try {
       if (userId) {
-        // If updating an existing user
+        // Update user
         await axios.patch(`http://localhost:8000/user/${userId}`, formData);
         alert('User updated successfully!');
       } else {
-        // If creating a new user
+        // Add new user
         await axios.post('http://localhost:8000/user', formData);
         alert('User added successfully!');
       }
-      navigate('/users'); // Redirect to the users page after operation
+      navigate('/users'); // Redirect after form submission
     } catch (error) {
       console.error('Error submitting form:', error.response ? error.response.data : error.message);
     }
@@ -59,7 +59,7 @@ function UserForm({ userId }) {
 
   return (
     <div className="flex justify-center items-center p-5">
-      <div className="card w-full max-w-md shadow-lg p-5 bg-base-100">
+      <div className="card w-full max-w-lg shadow-lg bg-base-100 p-5">
         <h2 className="text-2xl font-bold mb-5 text-center">
           {userId ? 'Update User' : 'Add New User'}
         </h2>
