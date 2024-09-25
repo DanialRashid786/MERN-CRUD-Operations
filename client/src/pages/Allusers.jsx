@@ -5,10 +5,11 @@ import Table from '../Components/Table';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 function Allusers() {
   const [users, setUsers] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,19 +33,42 @@ function Allusers() {
     }
   };
 
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedUsers = [...users].sort((a, b) => {
+    if (sortConfig.key) {
+      const aKey = sortConfig.key === 'createdAt' || sortConfig.key === 'updatedAt' ? new Date(a[sortConfig.key]) : a[sortConfig.key];
+      const bKey = sortConfig.key === 'createdAt' || sortConfig.key === 'updatedAt' ? new Date(b[sortConfig.key]) : b[sortConfig.key];
+
+      if (aKey < bKey) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (aKey > bKey) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+    }
+    return 0;
+  });
+
   const columns = [
-    'No',
-    'First Name',
-    'Last Name',
-    'Email',
-    'Address',
-    'Created At',
-    'Updated At',
-    'Update',
-    'Delete'
+    { label: 'No', key: 'index' },
+    { label: 'First Name', key: 'first_name' },
+    { label: 'Last Name', key: 'last_name' },
+    { label: 'Email', key: 'email' },
+    { label: 'Address', key: 'address' },
+    { label: 'Created At', key: 'createdAt', sortable: true },
+    { label: 'Updated At', key: 'updatedAt', sortable: true },
+    { label: 'Update', key: 'update' },
+    { label: 'Delete', key: 'delete' }
   ];
 
-  const data = users.map((user, index) => ({
+  const data = sortedUsers.map((user, index) => ({
     'No': index + 1,
     'First Name': user.first_name,
     'Last Name': user.last_name,
@@ -68,6 +92,16 @@ function Allusers() {
     )
   }));
 
+  const getSortIcon = (columnKey) => {
+    if (sortConfig.key !== columnKey) {
+      return <FontAwesomeIcon icon={faSort} />;
+    }
+    if (sortConfig.direction === 'asc') {
+      return <FontAwesomeIcon icon={faSortUp} />;
+    }
+    return <FontAwesomeIcon icon={faSortDown} />;
+  };
+
   return (
     <>
       <Header />
@@ -79,7 +113,33 @@ function Allusers() {
           </Link>
         </div>
         <div className="overflow-x-auto">
-          <Table columns={columns} data={data} />
+          <table className="table-auto w-full">
+            <thead>
+              <tr>
+                {columns.map((column) => (
+                  <th
+                    key={column.key}
+                    className="p-2"
+                    onClick={() => column.sortable && handleSort(column.key)}
+                    style={{ cursor: column.sortable ? 'pointer' : 'default' }}
+                  >
+                    {column.label} {column.sortable && getSortIcon(column.key)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((row, index) => (
+                <tr key={index}>
+                  {columns.map((column) => (
+                    <td key={column.key} className="p-2">
+                      {row[column.label]}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
       <Footer />
