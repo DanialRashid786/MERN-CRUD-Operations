@@ -36,59 +36,69 @@ function Adduserform() {
   return (
     <>
       <Header />
-      <div className="container">
-        <h2 className="text-center m-5">Add New User</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="first_name" className="form-label">First Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="first_name"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="last_name" className="form-label">Last Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="last_name"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email</label>
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="address" className="form-label">Address</label>
-            <input
-              type="text"
-              className="form-control"
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-success">Add User</button>
-        </form>
+      <div className="flex justify-center items-center p-5">
+        <div className="card w-full max-w-lg shadow-lg bg-base-100 p-5">
+          <h2 className="text-2xl font-bold mb-5 text-center">Add New User</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-control mb-4">
+              <label htmlFor="first_name" className="label">
+                <span className="label-text">First Name</span>
+              </label>
+              <input
+                type="text"
+                id="first_name"
+                name="first_name"
+                className="input input-bordered"
+                value={formData.first_name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-control mb-4">
+              <label htmlFor="last_name" className="label">
+                <span className="label-text">Last Name</span>
+              </label>
+              <input
+                type="text"
+                id="last_name"
+                name="last_name"
+                className="input input-bordered"
+                value={formData.last_name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-control mb-4">
+              <label htmlFor="email" className="label">
+                <span className="label-text">Email</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="input input-bordered"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-control mb-4">
+              <label htmlFor="address" className="label">
+                <span className="label-text">Address</span>
+              </label>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                className="input input-bordered"
+                value={formData.address}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary w-full">Add User</button>
+          </form>
+        </div>
       </div>
       <Footer />
     </>
