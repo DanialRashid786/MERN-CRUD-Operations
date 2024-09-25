@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
-import Table from '../Components/Table';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -113,7 +112,7 @@ function Allusers() {
           </Link>
         </div>
         <div className="overflow-x-auto">
-          <table className="table-auto w-full">
+          <table className="table w-full table-zebra table-auto">
             <thead>
               <tr>
                 {columns.map((column) => (
