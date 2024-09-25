@@ -5,7 +5,7 @@ import Table from '../Components/Table';
 import axios from 'axios';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'; // Changed to relevant icons
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'; // Use appropriate icons
 
 function Allusers() {
   const [users, setUsers] = useState([]);
@@ -23,17 +23,15 @@ function Allusers() {
     fetchData(); // Call fetchData inside useEffect
   }, []);
 
-  // Handle delete user
-  // const handleDelete = async (userId) => {
-  //   try {
-  //     await axios.delete(`http://localhost:8000/user/${userId}`);
-  //     setUsers(users.filter(user => user.id !== userId)); // Update the state to remove the deleted user
-  //   } catch (error) {
-  //     console.error('Error deleting user:', error.response ? error.response.data : error.message);
-  //   }
-  // };
+  const handleDelete = async (userId) => {
+    try {
+      await axios.delete(`http://localhost:8000/user/${userId}`);
+      setUsers(users.filter(user => user._id !== userId)); // Update state after deletion
+    } catch (error) {
+      console.error('Error deleting user:', error.response ? error.response.data : error.message);
+    }
+  };
 
-  // Define the columns based on your data structure
   const columns = [
     'No',
     'First Name',
@@ -46,7 +44,6 @@ function Allusers() {
     'Delete'
   ];
 
-  // Transform `users` data to fit the table format
   const data = users.map((user, index) => ({
     'No': index + 1,
     'First Name': user.first_name,
@@ -56,28 +53,28 @@ function Allusers() {
     'Created At': new Date(user.createdAt).toLocaleDateString(),
     'Updated At': new Date(user.updatedAt).toLocaleDateString(),
     'Update': (
-      
-     <div><FontAwesomeIcon icon={faEdit} /> Edit</div>   
-  
+      <Link to={`/updateuser/${user._id}`} className="btn btn-primary">
+        <FontAwesomeIcon icon={faEdit} /> Edit
+      </Link>
     ),
     'Delete': (
-   
-      <div>  <FontAwesomeIcon icon={faTrash} /> Delete</div>
+      <button 
+        type="button" 
+        className="btn btn-danger" 
+        onClick={() => handleDelete(user._id)}>
+        <FontAwesomeIcon icon={faTrash} /> Delete
+      </button>
     )
   }));
 
   return (
     <>
       <Header />
-
       <div className="container">
         <Link to="/addnewuser" className="btn btn-outline btn-success m-5">Add User</Link>
         <h1 className="text-center underline">Users Table</h1>
-
-        {/* Render Table component with dynamic columns and data */}
         <Table columns={columns} data={data} />
       </div>
-
       <Footer />
     </>
   );
