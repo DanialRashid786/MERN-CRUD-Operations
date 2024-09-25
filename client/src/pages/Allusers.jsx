@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import toast from "react-hot-toast";
 
 function Allusers() {
   const [users, setUsers] = useState([]);
@@ -27,6 +28,7 @@ function Allusers() {
     try {
       await axios.delete(`http://localhost:8000/user/${userId}`);
       setUsers(users.filter((user) => user._id !== userId));
+      toast.success(`Delete User Successfully.`);
     } catch (error) {
       console.error('Error deleting user:', error.response ? error.response.data : error.message);
     }

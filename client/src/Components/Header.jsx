@@ -43,7 +43,7 @@ function Header() {
               </div>
               {/* Use Link instead of <a> */}
               <Link to="/" className="btn btn-ghost text-xl">
-                daisyUI
+                CRUD(MERN Stack)
               </Link>
             </div>
             <div className="navbar-center hidden lg:flex">

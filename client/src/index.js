@@ -7,12 +7,15 @@ import { BrowserRouter } from "react-router-dom";
 
 import reportWebVitals from './reportWebVitals';
 
+import {Toaster} from 'react-hot-toast'
+
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
       <div className="">
         <App/>
+        <Toaster/>
       </div>
   </BrowserRouter>
 );

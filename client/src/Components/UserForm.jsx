@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import toast from "react-hot-toast";
 
 function UserForm({ userId }) {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function UserForm({ userId }) {
             address: response.data.address
           });
         } catch (error) {
+          toast.error('Error fetching user data.');
           console.error('Error fetching user data:', error.response ? error.response.data : error.message);
         }
       };
@@ -45,14 +47,15 @@ function UserForm({ userId }) {
       if (userId) {
         // Update user
         await axios.patch(`http://localhost:8000/user/${userId}`, formData);
-        alert('User updated successfully!');
+        toast.success(`User updated successfully! {userId}`);
       } else {
         // Add new user
         await axios.post('http://localhost:8000/user', formData);
-        alert('User added successfully!');
+        toast.success('User added successfully!');
       }
       navigate('/users'); // Redirect after form submission
     } catch (error) {
+      toast.error('Error submitting form.');
       console.error('Error submitting form:', error.response ? error.response.data : error.message);
     }
   };
